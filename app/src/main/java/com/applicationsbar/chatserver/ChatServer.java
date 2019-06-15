@@ -165,6 +165,7 @@ public class ChatServer {
             try {
                 clientSocket = serverSocket.accept();
                 int i;
+                System.out.println("New connection");
                 for (i = 0; i < maxClientsCount; i++) {
                     if (threads[i] == null) {
 
@@ -229,6 +230,7 @@ class clientThread extends Thread {
             is = new DataInputStream(tClientSocket.getInputStream());
             os = new PrintStream(tClientSocket.getOutputStream());
             String joinString = is.readLine().trim();
+            System.out.println("Input String:"+joinString);
             String joinType = joinString.split("&")[0];
             if (joinType.equals("signUp"))
             {
