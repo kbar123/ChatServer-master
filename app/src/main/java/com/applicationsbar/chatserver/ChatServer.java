@@ -1,12 +1,10 @@
 package com.applicationsbar.chatserver;
 
-import android.provider.Settings;
-
 import java.io.DataInputStream;
-import java.io.PrintStream;
 import java.io.IOException;
-import java.net.Socket;
+import java.io.PrintStream;
 import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.ArrayList;
 
 import static com.applicationsbar.chatserver.ChatServer.GetRoomPlayer;
@@ -15,7 +13,6 @@ import static com.applicationsbar.chatserver.ChatServer.drawingPlayersList;
 import static com.applicationsbar.chatserver.ChatServer.isExistChatRoom;
 import static com.applicationsbar.chatserver.ChatServer.sendByteArrayMessage;
 import static com.applicationsbar.chatserver.ChatServer.sendLoginFailedMessage;
-import static com.applicationsbar.chatserver.ChatServer.sendSignUpFailedMessage;
 import static com.applicationsbar.chatserver.ChatServer.sendStringMessage;
 import static java.lang.System.out;
 
@@ -35,8 +32,8 @@ public class ChatServer {
     private static final int maxClientsCount = 10; //max number of clients to accept
     private static final clientThread[] threads = new clientThread[maxClientsCount];//list of the client's threads
     public static final RandomWord word = new RandomWord();//a new RandomWord object
-    public static ArrayList<DrawingPlayer> drawingPlayersList = new ArrayList<DrawingPlayer>();
-    public static ArrayList<Integer> chatRooms = new ArrayList<Integer>();
+    static ArrayList<DrawingPlayer> drawingPlayersList = new ArrayList<DrawingPlayer>();
+    static ArrayList<Integer> chatRooms = new ArrayList<Integer>();
 
     static Boolean isExistChatRoom(int chatRoom)
     {
@@ -98,25 +95,6 @@ public class ChatServer {
     }
 
     static void sendLoginFailedMessage(PrintStream os, String s) {
-
-        byte[] ba = s.getBytes();
-        try {
-
-            byte currentByte = 3;
-            os.write(currentByte);
-            int len = ba.length;
-
-            for (int i = 3; i >= 0; i--) {
-                currentByte = (byte) ((len >> (i * 8)) % 256);
-                os.write(currentByte);
-            }
-
-            os.write(ba);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-    static void sendSignUpFailedMessage(PrintStream os, String s) {
 
         byte[] ba = s.getBytes();
         try {
@@ -222,7 +200,7 @@ class clientThread extends Thread {
         String username= "";
         String password = "";
         String firstName = "";
-        String lastName = "";
+        String lastName;
         try {
             /*
              * Create input and output streams for this client.
